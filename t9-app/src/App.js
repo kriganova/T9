@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
+import Keypad from './Keypad';
 import './App.css';
+
 function App() {
 	const [results, setResults] = useState([]);
 	const [inputValue, setInputValue] = useState('');
+	const [showResults, setShowResults] = useState(false);
+	const [keypadVisibility, setKeypadVisibility] = useState(false);
 
-	const handleClick = () => {
-		const numberInput = document.getElementById('numberInput');
-		const number = numberInput.value.trim();
+	const handleClick = (number) => {
+		setInputValue((prevInputValue) => prevInputValue + number);
+	};
+
+	const handleConvert = () => {
+		const number = inputValue.trim();
 
 		// Validate if the input number is empty or not a digit
 		if (number === '' || !/^\d+$/.test(number)) {
@@ -19,6 +26,8 @@ function App() {
 
 		// Set the results state
 		setResults(combinations);
+		setShowResults(true);
+		setKeypadVisibility((prevVisibility) => !prevVisibility);
 	};
 
 	// Function to generate combinations of characters based on the input number
@@ -57,6 +66,11 @@ function App() {
 	const handleClean = () => {
 		setResults([]);
 		setInputValue('');
+		setShowResults(false);
+	};
+
+	const showKeypad = () => {
+		setKeypadVisibility((prevVisibility) => !prevVisibility);
 	};
 
 	return (
@@ -64,30 +78,37 @@ function App() {
 			<h1>Number to Word Converter</h1>
 			<div className="input-container">
 				<label className="label">Enter a number:</label>
-				{/* <input type="text" id="numberInput" /> */}
 				<input
 					type="text"
 					id="numberInput"
 					value={inputValue}
 					onChange={(e) => setInputValue(e.target.value)}
+					readOnly
 				/>
-				<button onClick={handleClick} className="button">
-					Convert
+				<button onClick={showKeypad} className="keypad-button">
+					Keypad
 				</button>
 			</div>
-			<div className="list">
-				{/* Map the results to display */}
-				<ul>
-					{results.map((result, index) => (
-						<li key={index}>{result}</li>
-					))}
-				</ul>
-				{results.length > 0 && (
-					<button onClick={handleClean} className="button">
-						Clean
-					</button>
-				)}
-			</div>
+			{keypadVisibility && <Keypad handleClick={handleClick} />}
+			<button onClick={handleConvert} className="button">
+				Convert
+			</button>
+
+			{showResults && (
+				<div className="list">
+					{/* Map the results to display */}
+					<ul>
+						{results.map((result, index) => (
+							<li key={index}>{result}</li>
+						))}
+					</ul>
+					{showResults && (
+						<button onClick={handleClean} className="button">
+							Clean
+						</button>
+					)}
+				</div>
+			)}
 		</div>
 	);
 }

@@ -1,0 +1,13 @@
+.row {
+	display: flex;
+    justify-content: center;
+	button {
+        background: linear-gradient(152deg, rgb(173 173 173) 0%, rgb(226 226 226) 100%) no-repeat;
+        border: 1px solid rgb(173 173 173);
+		border-radius: 5px;
+		margin: 5px;
+		padding: 5px;
+		width: 52px;
+		height: 52px;
+	}
+}
