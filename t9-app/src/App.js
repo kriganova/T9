@@ -28,6 +28,7 @@ function App() {
 		// Set the results state
 		setResults(combinations);
 		setShowResults(true);
+		setKeypadVisibility(false);
 	};
 
 	// Function to generate combinations of characters based on the input number
