@@ -1,6 +1,7 @@
+// frontend/src/App.js
 import React, { useState } from 'react';
-import Keypad from './Keypad';
-import './App.css';
+import Keypad from './Keypad'; // Import the Keypad component
+import './App.css'; // Import the CSS file
 
 function App() {
 	const [results, setResults] = useState([]);
@@ -27,7 +28,6 @@ function App() {
 		// Set the results state
 		setResults(combinations);
 		setShowResults(true);
-		setKeypadVisibility((prevVisibility) => !prevVisibility);
 	};
 
 	// Function to generate combinations of characters based on the input number
@@ -67,48 +67,50 @@ function App() {
 		setResults([]);
 		setInputValue('');
 		setShowResults(false);
+		setKeypadVisibility(false);
 	};
 
-	const showKeypad = () => {
+	const handleToggleKeypad = () => {
 		setKeypadVisibility((prevVisibility) => !prevVisibility);
 	};
 
-	return (
-		<div className="app-wrapper">
-			<h1>Number to Word Converter</h1>
-			<div className="input-container">
-				<label className="label">Enter a number:</label>
-				<input
-					type="text"
-					id="numberInput"
-					value={inputValue}
-					onChange={(e) => setInputValue(e.target.value)}
-					readOnly
-				/>
-				<button onClick={showKeypad} className="keypad-button">
-					Keypad
-				</button>
-			</div>
-			{keypadVisibility && <Keypad handleClick={handleClick} />}
-			<button onClick={handleConvert} className="button">
-				Convert
-			</button>
+	const handleInputChange = (e) => {
+		setInputValue(e.target.value);
+	};
 
-			{showResults && (
-				<div className="list">
-					{/* Map the results to display */}
-					<ul>
-						{results.map((result, index) => (
-							<li key={index}>{result}</li>
-						))}
-					</ul>
-					{showResults && (
-						<button onClick={handleClean} className="button">
-							Clean
-						</button>
-					)}
+	return (
+		<div className="App">
+			<div className="app-wrapper">
+				<h1>Number to Word Converter</h1>
+				<div className="input-container">
+					<label className="label">Enter a number:</label>
+					<input type="text" id="numberInput" value={inputValue} onChange={handleInputChange} />
+					{/* Button to toggle keypad visibility */}
+					<button onClick={handleToggleKeypad} className="keypad-button">
+						Keypad
+					</button>
 				</div>
-			)}
+				{/* Render the Keypad only when visible */}
+				{keypadVisibility && <Keypad handleClick={handleClick} />}
+				<button onClick={handleConvert} className="button">
+					Convert
+				</button>
+				{showResults && (
+					<div className="list">
+						{/* Map the results to display */}
+						<ul>
+							{results.map((result, index) => (
+								<li key={index}>{result}</li>
+							))}
+						</ul>
+						{showResults && (
+							<button onClick={handleClean} className="button">
+								Clean
+							</button>
+						)}
+					</div>
+				)}
+			</div>
 		</div>
 	);
 }
